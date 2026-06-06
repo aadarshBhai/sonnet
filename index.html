@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sonnet31 - Issue 1: The Human Sensemaking</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        :root {
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #141414;
+            --bg-card: #1a1a1a;
+            --text-primary: #f5f5f5;
+            --text-secondary: #a0a0a0;
+            --accent: #d4af37;
+            --border: #2a2a2a;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Header Styles */
+        header {
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            border-bottom: 1px solid var(--border);
+            transition: padding 0.3s ease;
+        }
+
+        header.scrolled {
+            padding: 12px 0;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Crimson Text', serif;
+            font-size: clamp(20px, 4vw, 28px);
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        /* Desktop Navigation */
+        nav {
+            display: flex;
+            gap: 32px;
+        }
+
+        nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        nav a:after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover {
+            color: var(--text-primary);
+        }
+
+        nav a:hover:after {
+            width: 100%;
+        }
+
+        /* Mobile Menu Button */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            padding: 10px;
+            z-index: 1001;
+        }
+
+        .menu-toggle span {
+            width: 25px;
+            height: 2px;
+            background: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        .menu-toggle.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .menu-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .menu-toggle.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
+
+        /* Mobile Navigation */
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--bg-primary);
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .mobile-nav.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .mobile-nav a {
+            font-size: 24px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-family: 'Crimson Text', serif;
+            transition: color 0.3s ease;
+        }
+
+        .mobile-nav a:hover {
+            color: var(--accent);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: clamp(60px, 10vw, 100px) 0;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: clamp(40px, 6vw, 60px);
+            align-items: center;
+        }
+
+        .hero-content h1 {
+            font-family: 'Crimson Text', serif;
+            font-size: clamp(32px, 5vw, 52px);
+            font-weight: 600;
+            line-height: 1.2;
+            margin-bottom: 16px;
+        }
+
+        .hero-subtitle {
+            font-family: 'Crimson Text', serif;
+            font-size: clamp(18px, 3vw, 26px);
+            font-style: italic;
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+        }
+
+        .hero-body {
+            font-size: clamp(14px, 2vw, 16px);
+            color: var(--text-secondary);
+            margin-bottom: 32px;
+        }
+
+        .hero-image {
+            position: relative;
+            aspect-ratio: 4/3;
+            background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
+            border-radius: 8px;
+            overflow: hidden;
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .hero-image:hover img {
+            transform: scale(1.05);
+        }
+
+        /* Button Styles */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 32px;
+            background: var(--text-primary);
+            color: var(--bg-primary);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.4);
+            }
+            50% {
+                box-shadow: 0 0 0 10px rgba(212, 175, 55, 0);
+            }
+        }
+
+        .btn:hover {
+            background: var(--accent);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+            animation: none;
+        }
+
+        .btn-outline:hover {
+            background: var(--bg-card);
+            border-color: var(--text-secondary);
+        }
+
+        /* Editor's Note */
+        .editors-note {
+            background: var(--bg-secondary);
+            padding: clamp(40px, 6vw, 60px) 0;
+            margin: 40px 0;
+            border-radius: 8px;
+        }
+
+        .editors-note-content {
+            display: grid;
+            grid-template-columns: 80px 1fr;
+            gap: 32px;
+            align-items: start;
+        }
+
+        .editors-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--bg-card);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--border);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .editors-icon svg {
+            width: 40px;
+            height: 40px;
+            color: var(--accent);
+        }
+
+        .editors-note h3 {
+            font-family: 'Crimson Text', serif;
+            font-size: clamp(22px, 3vw, 30px);
+            margin-bottom: 16px;
+        }
+
+        .editors-note p {
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+        }
+
+        .editors-note ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .editors-note li {
+            color: var(--text-secondary);
+            padding: 8px 0;
+            padding-left: 28px;
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+
+        .editors-note li:hover {
+            transform: translateX(5px);
+        }
+
+        .editors-note li:before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 16px;
+            width: 8px;
+            height: 8px;
+            background: var(--accent);
+            border-radius: 50%;
+        }
+
+        /* Section Styles */
+        .section {
+            padding: clamp(60px, 10vw, 100px) 0;
+        }
+
+        .section-title {
+            font-family: 'Crimson Text', serif;
+            font-size: clamp(28px, 4vw, 42px);
+            text-align: center;
+            margin-bottom: clamp(40px, 6vw, 60px);
+            position: relative;
+        }
+
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 2px;
+            background: var(--accent);
+        }
+
+        /* What is Section */
+        .what-is {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: clamp(40px, 6vw, 60px);
+            align-items: center;
+        }
+
+        .what-is-text h2 {
+            font-family: 'Crimson Text', serif;
+            font-size: clamp(28px, 4vw, 38px);
+            margin-bottom: 24px;
+        }
+
+        .what-is-text p {
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+
+        .what-is-image {
+            aspect-ratio: 4/3;
+            background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .what-is-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .what-is-image:hover img {
+            transform: scale(1.05);
+        }
+
+        /* Articles Grid */
+        .articles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 24px;
+        }
+
+        .article-card {
+            background: var(--bg-card);
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            transition: all 0.4s ease;
+            cursor: pointer;
+        }
+
+        .article-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: var(--accent);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .article-image {
+            aspect-ratio: 16/10;
+            background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .article-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .article-card:hover .article-image img {
+            transform: scale(1.1);
+        }
+
+        .article-number {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            width: 40px;
+            height: 40px;
+            background: var(--bg-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Crimson Text', serif;
+            font-weight: 700;
+            font-size: 18px;
+            border: 1px solid var(--border);
+            z-index: 10;
+        }
+
+        .article-content {
+            padding: 24px;
+        }
+
+        .article-title {
+            font-family: 'Crimson Text', serif;
+            font-size: clamp(18px, 2.5vw, 22px);
+            margin-bottom: 12px;
+            transition: color 0.3s ease;
+        }
+
+        .article-card:hover .article-title {
+            color: var(--accent);
+        }
+
+        .article-desc {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .article-link {
+            color: var(--accent);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: gap 0.3s ease;
+        }
+
+        .article-link:hover {
+            gap: 12px;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: var(--bg-secondary);
+            padding: clamp(60px, 10vw, 100px) 0;
+            text-align: center;
+            border-radius: 8px;
+            margin: 40px 0;
+        }
+
+        .cta-section h2 {
+            font-family: 'Crimson Text', serif;
+            font-size: clamp(28px, 4vw, 44px);
+            margin-bottom: 16px;
+        }
+
+        .cta-section p {
+            color: var(--text-secondary);
+            margin-bottom: 32px;
+            font-size: clamp(14px, 2vw, 16px);
+        }
+
+        /* Footer */
+        footer {
+            padding: clamp(40px, 6vw, 60px) 0;
+            text-align: center;
+            border-top: 1px solid var(--border);
+        }
+
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 24px;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .social-link:hover {
+            background: var(--accent);
+            color: var(--bg-primary);
+            border-color: var(--accent);
+            transform: translateY(-5px) rotate(360deg);
+        }
+
+        .social-link svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        footer p {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Scroll to Top Button */
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: var(--accent);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 999;
+        }
+
+        .scroll-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .scroll-top:hover {
+            transform: translateY(-5px);
+        }
+
+        .scroll-top svg {
+            width: 24px;
+            height: 24px;
+            color: var(--bg-primary);
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 968px) {
+            .hero, .what-is {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-image {
+                order: -1;
+            }
+
+            nav {
+                display: none;
+            }
+
+            .menu-toggle {
+                display: flex;
+            }
+
+            .mobile-nav {
+                display: flex;
+            }
+
+            .articles-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .editors-note-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .editors-icon {
+                margin: 0 auto;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 16px;
+            }
+
+            .btn {
+                padding: 14px 24px;
+                font-size: 13px;
+            }
+
+            .cta-section .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .scroll-top {
+                bottom: 20px;
+                right: 20px;
+                width: 44px;
+                height: 44px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">SONNET31</div>
+                <nav>
+                    <a href="#hero">Home</a>
+                    <a href="#articles">Issue 1</a>
+                    <a href="#about">About</a>
+                    <a href="#contact">Contact</a>
+                </nav>
+                <div class="menu-toggle" id="menuToggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="mobile-nav" id="mobileNav">
+        <a href="#hero">Home</a>
+        <a href="#articles">Issue 1</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+    </div>
+
+    <main>
+        <section class="container" id="hero">
+            <div class="hero">
+                <div class="hero-content fade-in">
+                    <h1>Issue 1 The Human Sensemaking</h1>
+                    <p class="hero-subtitle">A slow read for this fast algorithm-driven world.</p>
+                    <p class="hero-body">
+                        A monthly magazine exploring literature, psychology, art, creativity, relationships, and people.<br><br>
+                        Sonnet31 holds space for meaning and adds value to your day. It respects your emotions rather than preying on your attention, dulling your cognition in the long run.<br><br>
+                        Begin a rewarding journey of slowing down, reminiscing and going through layers of depth and beauty in this anthropological exploration of what it means to be human still.
+                    </p>
+                    <a href="#articles" class="btn">Read Issue 1 →</a>
+                </div>
+                <div class="hero-image">
+                    <img src="images/1st image.jpeg" alt="Open book" loading="lazy">
+                </div>
+            </div>
+        </section>
+
+        <section class="container">
+            <div class="editors-note fade-in">
+                <div class="container">
+                    <div class="editors-note-content">
+                        <div class="editors-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h3>Editor's Note</h3>
+                            <p>We are meaning-starved in a world with abundant content to consume.</p>
+                            <p>In a counter-cultural stance, I made Sonnet31. It is my step towards better content that:</p>
+                            <ul>
+                                <li>Doesn't chase vanity metrics.</li>
+                                <li>That isn't dictated by algorithms.</li>
+                                <li>That doesn't prey on your attention.</li>
+                                <li>Adds value instead.</li>
+                            </ul>
+                            <p>Come on this gentle journey of self-reflection, self-discovery and personal growth with me, happy reading!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section container" id="about">
+            <div class="what-is">
+                <div class="what-is-text fade-in">
+                    <h2>What is Sonnet31?</h2>
+                    <p>When was the last time you took a stroll in a garden or just sat at the shore observing gentle waves kissing the land? You might have done that on a vacation, but what if you could slow down everyday?</p>
+                    <p>Here is a space where you're welcome with no ulterior motives. A space that allows you to reflect, think and enrich your soul.</p>
+                    <p>That space is Sonnet31, a monthly magazine for readers who want depth, reflection, and meaningful conversations about people, art, culture, literature and humanity.</p>
+                    <p>Through fiction, psychology, poetry, interviews, essays, and art, we explore the things that shape us: love, grief, creativity, purpose, identity, beauty, and belonging.</p>
+                </div>
+                <div class="what-is-image fade-in">
+                    <img src="images/2nd image.jpeg" alt="Peaceful beach" loading="lazy">
+                </div>
+            </div>
+        </section>
+
+        <section class="section container" id="articles">
+            <h2 class="section-title fade-in">Inside Issue 1</h2>
+            <div class="articles-grid">
+                <article class="article-card fade-in">
+                    <div class="article-image">
+                        <div class="article-number">01</div>
+                        <img src="images/wolf and rabbits image.jpeg" alt="The Wolves and The Rabbits" loading="lazy">
+                    </div>
+                    <div class="article-content">
+                        <h3 class="article-title">The Wolves and The Rabbits</h3>
+                        <p class="article-desc">A retired family patriarch believes he has spent his life protecting the women he loves. Is it fierce love or benevolent sexism masquerading through life? A powerful short story about the kind of love that can be very giving and depreciating at the same time.</p>
+                        <a href="#" class="article-link">Read Preview →</a>
+                    </div>
+                </article>
+
+                <article class="article-card fade-in">
+                    <div class="article-image">
+                        <div class="article-number">02</div>
+                        <img src="images/immortality and existentialism.jpeg" alt="Immortality and existentialism" loading="lazy">
+                    </div>
+                    <div class="article-content">
+                        <h3 class="article-title">Immortality and existentialism</h3>
+                        <p class="article-desc">Chapter one of a serialised fantasy novel. Auri, a golden iridescent (immortal human), is training to become a redeemer of souls. But he is entrenched in grief. Shae is an intense immortal warrior trudging existentialism.</p>
+                        <a href="#" class="article-link">Read Preview →</a>
+                    </div>
+                </article>
+
+                <article class="article-card fade-in">
+                    <div class="article-image">
+                        <div class="article-number">03</div>
+                        <img src="images/therapist take.jpeg" alt="Therapist's take" loading="lazy">
+                    </div>
+                    <div class="article-content">
+                        <h3 class="article-title">Therapist's take</h3>
+                        <p class="article-desc">Can control disguise itself as care? Can dependence masquerade as love? A therapist unpacks the hidden family dynamics, emotional patterns, and psychological themes explored in The Wolves and The Rabbits.</p>
+                        <a href="#" class="article-link">Read Preview →</a>
+                    </div>
+                </article>
+
+                <article class="article-card fade-in">
+                    <div class="article-image">
+                        <div class="article-number">04</div>
+                        <img src="images/author interview.jpeg" alt="Author Interview" loading="lazy">
+                    </div>
+                    <div class="article-content">
+                        <h3 class="article-title">Author Interview</h3>
+                        <p class="article-desc">A conversation with fantasy author Prashanth Srivatsa. On imagination, discipline, worldbuilding, creativity, and why good writing does not need to fit a niche.</p>
+                        <a href="#" class="article-link">Read Preview →</a>
+                    </div>
+                </article>
+
+                <article class="article-card fade-in">
+                    <div class="article-image">
+                        <div class="article-number">05</div>
+                        <img src="images/artist interview.jpeg" alt="Artist Interview" loading="lazy">
+                    </div>
+                    <div class="article-content">
+                        <h3 class="article-title">Artist Interview</h3>
+                        <p class="article-desc">Will artificial intelligence replace artists? An honest conversation about originality, inspiration, and the future of human artistry with artist Jithin Roda.</p>
+                        <a href="#" class="article-link">Read Preview →</a>
+                    </div>
+                </article>
+
+                <article class="article-card fade-in">
+                    <div class="article-image">
+                        <div class="article-number">06</div>
+                        <img src="images/dear madras.jpeg" alt="Dear Madras" loading="lazy">
+                    </div>
+                    <div class="article-content">
+                        <h3 class="article-title">Dear Madras</h3>
+                        <p class="article-desc">A city remembered through bookstores, beaches, friendships, longing, and memory. A poem that feels like a letter to a place you call home.</p>
+                        <a href="#" class="article-link">Read Preview →</a>
+                    </div>
+                </article>
+
+                <article class="article-card fade-in">
+                    <div class="article-image">
+                        <div class="article-number">07</div>
+                        <img src="images/the art of waiting.jpeg" alt="The Art of Waiting" loading="lazy">
+                    </div>
+                    <div class="article-content">
+                        <h3 class="article-title">The Art of Waiting</h3>
+                        <p class="article-desc">What happens when handwritten letters return in an age of instant gratification? A feature on The Madras Art Mail and the quiet joy of anticipation, collectability, and slowing down.</p>
+                        <a href="#" class="article-link">Read Preview →</a>
+                    </div>
+                </article>
+
+                <article class="article-card fade-in">
+                    <div class="article-image">
+                        <div class="article-number">08</div>
+                        <img src="images/book that linger.jpeg" alt="Books that Linger" loading="lazy">
+                    </div>
+                    <div class="article-content">
+                        <h3 class="article-title">Books that Linger</h3>
+                        <p class="article-desc">A literary exploration of two remarkable post-post-modern novels that quench the soul with much-needed emotional depth.</p>
+                        <a href="#" class="article-link">Read Preview →</a>
+                    </div>
+                </article>
+
+                <article class="article-card fade-in">
+                    <div class="article-image">
+                        <div class="article-number">09</div>
+                        <img src="images/hummingbird.jpeg" alt="Art and The Artist" loading="lazy">
+                    </div>
+                    <div class="article-content">
+                        <h3 class="article-title">Art and The Artist</h3>
+                        <p class="article-desc">On unfinished paintings. On hummingbirds. On hope. A personal reflection on imperfection, longing, creativity, and beauty.</p>
+                        <a href="#" class="article-link">Read Preview →</a>
+                    </div>
+                </article>
+
+                <article class="article-card fade-in">
+                    <div class="article-image">
+                        <div class="article-number">10</div>
+                        <img src="images/high tea poetry.jpeg" alt="High-Tea Poetry" loading="lazy">
+                    </div>
+                    <div class="article-content">
+                        <h3 class="article-title">High-Tea Poetry</h3>
+                        <p class="article-desc">Tenderly explore the depths of love, heartbreak, friendship, longing, faith and hope through poetry. A personal reflection by the editor.</p>
+                        <a href="#" class="article-link">Read Preview →</a>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section class="container" id="contact">
+            <div class="cta-section fade-in">
+                <div class="container">
+                    <h2>Choose to nurture your mind over brainrot</h2>
+                    <p><strong>Issue 1 The Human Sense Making</strong><br>Featuring fiction, poetry, psychology, interviews, essays, art, and literary criticism.</p>
+                    <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+                        <button class="btn">Digital Edition</button>
+                        <button class="btn btn-outline">Buy now</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="social-links">
+                    <a href="https://www.linkedin.com/company/sonnet31/" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="LinkedIn">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                        </svg>
+                    </a>
+                    <a href="https://www.instagram.com/sonnet31official?igsh=MWdycTJucmJxNGk3cA==" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Instagram">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                        </svg>
+                    </a>
+                </div>
+                <p>© 2024 Sonnet31. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <button class="scroll-top" id="scrollTop" aria-label="Scroll to top">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
+        </svg>
+    </button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile Menu Toggle
+            const menuToggle = document.getElementById('menuToggle');
+            const mobileNav = document.getElementById('mobileNav');
+            
+            menuToggle.addEventListener('click', function() {
+                menuToggle.classList.toggle('active');
+                mobileNav.classList.toggle('active');
+                document.body.style.overflow = mobileNav.classList.contains('active') ? 'hidden' : '';
+            });
+
+            // Close mobile menu on link click
+            mobileNav.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', function() {
+                    menuToggle.classList.remove('active');
+                    mobileNav.classList.remove('active');
+                    document.body.style.overflow = '';
+                });
+            });
+
+            // Scroll animations
+            const fadeElements = document.querySelectorAll('.fade-in');
+            
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach((entry, index) => {
+                    if (entry.isIntersecting) {
+                        setTimeout(() => {
+                            entry.target.classList.add('visible');
+                        }, index * 100);
+                    }
+                });
+            }, observerOptions);
+
+            fadeElements.forEach(el => {
+                observer.observe(el);
+            });
+
+            // Header scroll behavior
+            let lastScroll = 0;
+            const header = document.querySelector('header');
+            const scrollTopBtn = document.getElementById('scrollTop');
+            
+            window.addEventListener('scroll', function() {
+                const currentScroll = window.pageYOffset;
+                
+                // Header shrink on scroll
+                if (currentScroll > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+                
+                // Header hide on scroll down
+                if (currentScroll > lastScroll && currentScroll > 100) {
+                    header.style.transform = 'translateY(-100%)';
+                } else {
+                    header.style.transform = 'translateY(0)';
+                }
+                
+                header.style.transition = 'transform 0.3s ease, padding 0.3s ease';
+                lastScroll = currentScroll;
+
+                // Scroll to top button visibility
+                if (currentScroll > 400) {
+                    scrollTopBtn.classList.add('visible');
+                } else {
+                    scrollTopBtn.classList.remove('visible');
+                }
+            });
+
+            // Scroll to top button
+            scrollTopBtn.addEventListener('click', function() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+
+            // Button click handlers
+            const buttons = document.querySelectorAll('.btn');
+            buttons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    // If it's an anchor link, let it scroll
+                    if (this.getAttribute('href') && this.getAttribute('href').startsWith('#')) {
+                        return;
+                    }
+                    e.preventDefault();
+                    console.log('Button clicked:', this.textContent.trim());
+                });
+            });
+
+            // Article link handlers
+            const articleLinks = document.querySelectorAll('.article-link, .article-card');
+            articleLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    const card = this.closest('.article-card');
+                    if (card) {
+                        const title = card.querySelector('.article-title').textContent;
+                        console.log('Article clicked:', title);
+                    }
+                });
+            });
+
+            // Parallax effect for hero
+            window.addEventListener('scroll', function() {
+                const scrolled = window.pageYOffset;
+                const heroImage = document.querySelector('.hero-image');
+                if (heroImage) {
+                    heroImage.style.transform = `translateY(${scrolled * 0.1}px)`;
+                }
+            });
+
+            // Preload images for better performance
+            const images = document.querySelectorAll('img[loading="lazy"]');
+            if ('IntersectionObserver' in window) {
+                const imageObserver = new IntersectionObserver((entries, observer) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const img = entry.target;
+                            img.classList.add('loaded');
+                            observer.unobserve(img);
+                        }
+                    });
+                });
+
+                images.forEach(img => imageObserver.observe(img));
+            }
+        });
+    </script>
+</body>
+</html>
