@@ -79,6 +79,13 @@
             letter-spacing: 1px;
             text-transform: none;
             transition: transform 0.3s ease;
+            line-height: 1;
+        }
+
+        .logo-number {
+            vertical-align: baseline;
+            display: inline-block;
+            transform: translateY(-2px);
         }
 
         .logo:hover {
@@ -713,7 +720,7 @@
     <header>
         <div class="container">
             <div class="header-content">
-                <div class="logo">Sonnet31</div>
+                <div class="logo">Sonnet<span class="logo-number">31</span></div>
                 <nav>
                     <a href="#hero">Home</a>
                     <a href="#articles">Issue 1</a>
