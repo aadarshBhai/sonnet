@@ -64,8 +64,16 @@
             align-items: center;
         }
 
+        @font-face {
+            font-family: 'Frunchy Sage';
+            src: url('fonts/Frunchy-Sage.woff2') format('woff2'),
+                 url('fonts/Frunchy-Sage.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
+
         .logo {
-            font-family: 'Crimson Text', serif;
+            font-family: 'Frunchy Sage', 'Crimson Text', serif;
             font-size: clamp(20px, 4vw, 28px);
             font-weight: 700;
             letter-spacing: 2px;
@@ -917,8 +925,7 @@
                     <h2>Choose to nurture your mind over brainrot</h2>
                     <p><strong>Issue 1 The Human Sense Making</strong><br>Featuring fiction, poetry, psychology, interviews, essays, art, and literary criticism.</p>
                     <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
-                        <button class="btn">Digital Edition</button>
-                        <button class="btn btn-outline">Buy now</button>
+                        <button class="btn">Buy now</button>
                     </div>
                 </div>
             </div>
